@@ -2,19 +2,59 @@ package com.ejercicio.conferencia.components;
 
 import java.util.List;
 import org.springframework.stereotype.Component;
-import com.ejercicio.conferencia.dto.*;
+
+import com.ejercicio.conferencia.dto.EventConferenceDto;
+import com.ejercicio.conferencia.dto.TemesDto;
 import com.ejercicio.conferencia.utils.CONSTANT;
 import com.ejercicio.conferencia.utils.TemesCompare;
+
+import java.util.ArrayList;
 import java.util.Collections;
 
 @Component
 public class ConferenceLogic implements IConferenceLogic {
 
-    ConferenceDto conferenceDto;
+    private List<EventConferenceDto> temesConference;
+    private int totalConferenceMinutes;
+    private int countByTeme;
+    private int countConference; 
+
+    public List<EventConferenceDto> getTemeConference(){
+        return temesConference;
+    }
+
+    public void setTemeConference(List<EventConferenceDto> temesConference){
+        this.temesConference = temesConference;
+    }
+
+    public int getTotalConferenceMinutes(){
+        return totalConferenceMinutes;
+    }
+
+    public void setTotalConferenceMinutes(int totalConferenceMinutes){
+        this.totalConferenceMinutes = totalConferenceMinutes;
+    }
+
+    public int getCountByTeme(){
+        return countByTeme;
+    }
+
+    public void setCountByTeme(int countByTeme){
+        this.countByTeme = countByTeme;
+    }
+
+    public int getCountConference(){
+        return countConference;
+    }
+
+    public void setCountConference(int countConference){
+        this.countConference = countConference;
+    }
     
     public ConferenceLogic(){
-        conferenceDto = new ConferenceDto();
+        this.temesConference = new ArrayList();
     }
+    
     public List<EventConferenceDto> ListConferenceTemes(List<TemesDto> temes) {
         int account=0;
         int intMinutes=0;
@@ -39,20 +79,20 @@ public class ConferenceLogic implements IConferenceLogic {
                     totalMinutes = totalMinutes + intMinutes;
                 }
                 EventConferenceDto singleTalk = new EventConferenceDto(intMinutes, title, account);
-                conferenceDto.addTemeConference(singleTalk);
+                temesConference.add(singleTalk);
            
             } catch (Exception e) {
              e.printStackTrace();
             }
         }
         SetCalculatedTimeofSessionByTeme(account, intMinutes,totalMinutes);
-        return conferenceDto.getTemeConference();
+        return getTemeConference();
     }
     
     void SetCalculatedTimeofSessionByTeme(int account, int intMinutes, int totalMinutes)
     {
-        conferenceDto.setCountConference(account);
-        conferenceDto.setTotalConferenceMinutes(totalMinutes);
+        setCountConference(account);
+        setTotalConferenceMinutes(totalMinutes);
         Double totalMinutesInDouble =  totalMinutes*1.0;
         Double numberOfSession =  totalMinutesInDouble/ CONSTANT.TimeConfiguration.TOTAL_CONFERENCE_TALKS_TRACK_MINUTES;
         double fractionalPart = numberOfSession % 1;
@@ -70,7 +110,7 @@ public class ConferenceLogic implements IConferenceLogic {
         {
             noOfSession = (int) integralPart;
         }
-        conferenceDto.setCountByTeme(noOfSession);
-        Collections.sort(conferenceDto.getTemeConference(),new TemesCompare());
+        setCountByTeme(noOfSession);
+        Collections.sort(getTemeConference(),new TemesCompare());
     }
 }
