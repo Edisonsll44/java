@@ -9,18 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.ejercicio.conferencia.components.IInitialData;
 import com.ejercicio.conferencia.dto.EventConferenceDto;
 import com.ejercicio.conferencia.dto.TemesDto;
+import com.ejercicio.conferencia.service.IConferenceWrapperService;
 
 @SpringBootApplication
 public class EjercicioconferenciaApplication implements CommandLineRunner 
 {
-	private IInitialData _initialData;
-    private IConferenceLogic _conferenceLogic;
-    private ICalendarTeme _calendarTeme;
-    public EjercicioconferenciaApplication(IInitialData initialData, IConferenceLogic conferenceLogic, ICalendarTeme calendarTeme)
+    private IConferenceWrapperService _conferenceWrapperService;
+    public EjercicioconferenciaApplication(IInitialData initialData, IConferenceWrapperService conferenceWrapperService)
     {
-            _initialData = initialData;
-            _conferenceLogic = conferenceLogic;
-            _calendarTeme = calendarTeme;
+            _conferenceWrapperService = conferenceWrapperService;
     }
 	public static void main(String[] args) 
 	{
@@ -30,13 +27,7 @@ public class EjercicioconferenciaApplication implements CommandLineRunner
 	@Override
 	public void run(String... args)throws Exception
     {
-            _initialData.SetDataConferenceInDataBase();
-            List<TemesDto> listData = _initialData.GetData();
-            List<EventConferenceDto> list = _conferenceLogic.ListConferenceTemes(listData);
-            
-            int numberOfTemes = _conferenceLogic.getCountByTeme();
-            _calendarTeme.ScheduleTalksIntoTracks(numberOfTemes, list);
-            
+            List<EventConferenceDto> list = _conferenceWrapperService.GeneratedSchedulerConference();
             for(EventConferenceDto dto : list){
                 System.out.println("Conference theme: "+ dto.getTitle() + " in "+ dto.getMinutes() + " minutes");
             }
