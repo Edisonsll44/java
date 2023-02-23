@@ -27,9 +27,9 @@ public class EjercicioconferenciaApplication implements CommandLineRunner
 	@Override
 	public void run(String... args)throws Exception
     {
-            List<EventConferenceDto> list = _conferenceWrapperService.GeneratedSchedulerConference();
-            for(EventConferenceDto dto : list){
-                System.out.println("Conference theme: "+ dto.getTitle() + " in "+ dto.getMinutes() + " minutes");
-            }
+            // List<EventConferenceDto> list = _conferenceWrapperService.GeneratedSchedulerConference();
+            // for(EventConferenceDto dto : list){
+            //     System.out.println("Conference theme: "+ dto.getTitle() + " in "+ dto.getMinutes() + " minutes");
+            // }
     }
 }

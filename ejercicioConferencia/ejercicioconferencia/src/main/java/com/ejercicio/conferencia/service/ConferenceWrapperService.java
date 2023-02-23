@@ -2,12 +2,14 @@ package com.ejercicio.conferencia.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ejercicio.conferencia.components.ICalendarTeme;
 import com.ejercicio.conferencia.components.IConferenceLogic;
 import com.ejercicio.conferencia.components.IInitialData;
 import com.ejercicio.conferencia.dto.EventConferenceDto;
 import com.ejercicio.conferencia.dto.TemesDto;
-
+@Service
 public class ConferenceWrapperService implements IConferenceWrapperService
 {
     private IInitialData _initialData;
