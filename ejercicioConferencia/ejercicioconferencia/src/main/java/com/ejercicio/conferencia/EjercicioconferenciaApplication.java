@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.ejercicio.conferencia.components.IInitialData;
+import com.ejercicio.conferencia.dto.ConferenceDto;
 import com.ejercicio.conferencia.dto.EventConferenceDto;
 import com.ejercicio.conferencia.dto.TemesDto;
 
@@ -26,9 +27,12 @@ public class EjercicioconferenciaApplication implements CommandLineRunner
 
 	@Override
 	public void run(String... args)throws Exception
-        {
+    {
             _initialData.SetDataConferenceInDataBase();
             List<TemesDto> listData = _initialData.GetData();
             List<EventConferenceDto> list = _conferenceLogic.ListConferenceTemes(listData);
-	}
+            for(EventConferenceDto dto : list){
+                System.out.println("Conference theme: "+ dto.getTitle() + " in "+ dto.getMinutes() + " minutes");
+            }
+    }
 }

@@ -4,5 +4,5 @@ import com.ejercicio.conferencia.dto.EventConferenceDto;
 import java.util.List;
 
 public interface ICalendarTeme {
-    int ScheduleTalksIntoTracks(int account, List<EventConferenceDto> eventsConference, int trackCount,int index , int countConference);
+    int ScheduleTalksIntoTracks(int trackCountIndex, List<EventConferenceDto> trackTalks, int trackCount,int startTalkIndex , int totalTalkCount);
 }
