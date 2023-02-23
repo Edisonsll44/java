@@ -9,5 +9,8 @@ El proyecto esta construido en capas e implementando inyeccion de dependencias, 
 - Data - Models
 - Dto
 - Repository
-- Services
+- Service
 - Utils
+- Api
+
+  Para validar el api, debe ingrese en el navegador: http://127.0.0.1:8080/api/v1/conference
