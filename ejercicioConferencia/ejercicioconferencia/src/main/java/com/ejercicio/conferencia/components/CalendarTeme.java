@@ -2,8 +2,11 @@ package com.ejercicio.conferencia.components;
 
 import com.ejercicio.conferencia.dto.EventConferenceDto;
 import com.ejercicio.conferencia.utils.CONSTANT;
+import com.ejercicio.conferencia.utils.TemesCompare;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -11,15 +14,43 @@ import org.springframework.stereotype.Component;
 @Component
 public class CalendarTeme implements ICalendarTeme 
 {
-    public void ScheduleTalksIntoTracks(int numberOfTemes, List<EventConferenceDto> eventConference) 
+    public List<EventConferenceDto> ScheduleTalksIntoTracks(int numberOfTemes, List<EventConferenceDto> eventConference) 
     {
+        int startTeme = 0;
         for(int startkIndex = 0; startkIndex <numberOfTemes; startkIndex++)
         {
-            SetConfigurations(startkIndex,numberOfTemes,eventConference);
+           startTeme = SetConfigurations(startkIndex,numberOfTemes,eventConference, startTeme);
         } 
+        return eventConference;
     }
 
-    void SetConfigurations(int startkIndex, int numberOfTemes, List<EventConferenceDto> eventConference)
+   
+    public void OutputOfTalksIntoTracks(List<EventConferenceDto> eventConference) 
+    {
+        for(int trackCountIndex=0;trackCountIndex<eventConference.size();trackCountIndex++)
+        {
+            if(eventConference.get(trackCountIndex).isLunchFlag())
+            {
+                EventConferenceDto launchEvent = new EventConferenceDto(
+                    eventConference.get(trackCountIndex).getMinutes() , 
+                    eventConference.get(trackCountIndex).getLunchTitle(), 
+                    eventConference.get(trackCountIndex).getId());
+                eventConference.add(launchEvent);
+            }
+
+            if(eventConference.get(trackCountIndex).isNetworkingFlag())
+            {
+                EventConferenceDto networkingEvent = new EventConferenceDto(
+                    eventConference.get(trackCountIndex).getMinutes() , 
+                    eventConference.get(trackCountIndex).getNetworkingTitle(), 
+                    eventConference.get(trackCountIndex).getId());
+                    eventConference.add(networkingEvent);
+            }
+        }
+        //Collections.sort(eventConference,new TemesCompare());
+    }
+
+    int SetConfigurations(int startkIndex, int numberOfTemes, List<EventConferenceDto> eventConference, int startTeme)
     {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm a");
         Calendar cal = new GregorianCalendar();
@@ -35,13 +66,13 @@ public class CalendarTeme implements ICalendarTeme
     String sessionTime;
     String SessionTitle;
 
-    for(index=startkIndex; index< eventConference.size();index++) {
+    for(index=startTeme; index< eventConference.size();index++) {
         if (sum180 >= eventConference.get(index).getMinutes()) {
             sum180 = sum180 - eventConference.get(index).getMinutes();
             sessionTime = sdf.format(cal.getTime()) + " " + eventConference.get(index).getTitle() + " " + eventConference.get(index).getMinutes() + "min";
             eventConference.get(index).setTitle(sessionTime);
             cal.add(Calendar.MINUTE, eventConference.get(index).getMinutes());
-            SessionTitle = "Track" + " " + (index + 1);
+            SessionTitle = "Track" + " " + (startkIndex + 1);
             eventConference.get(index).setconferenceTitle(SessionTitle);
         }
         if (sum180 < eventConference.get(index).getMinutes())
@@ -67,7 +98,7 @@ public class CalendarTeme implements ICalendarTeme
             sessionTime = sdf.format(cal.getTime()) + " " + eventConference.get(index).getTitle() + " " + eventConference.get(index).getMinutes() + "min";
             eventConference.get(index).setTitle(sessionTime);
             cal.add(Calendar.MINUTE, eventConference.get(index).getMinutes());
-            SessionTitle = "Track" + " " + (index + 1);
+            SessionTitle = "Track" + " " + (startkIndex + 1);
             eventConference.get(index).setconferenceTitle(SessionTitle);
         }
         if (sum240 < eventConference.get(index).getMinutes())
@@ -86,5 +117,6 @@ public class CalendarTeme implements ICalendarTeme
     sessionTime = "5:00 PM" + " " + "Networking Event";
     eventConference.get(index).setNetworkingTitle(sessionTime);
     index++;
+    return index;
     }
 }
