@@ -7,6 +7,7 @@ import com.ejercicio.conferencia.utils.TemesCompare;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,8 @@ public class CalendarTeme implements ICalendarTeme
                 EventConferenceDto launchEvent = new EventConferenceDto(
                     eventConference.get(trackCountIndex).getMinutes() , 
                     eventConference.get(trackCountIndex).getLunchTitle(), 
-                    eventConference.get(trackCountIndex).getId());
+                    eventConference.get(trackCountIndex).getIdLunch(),
+                    eventConference.get(trackCountIndex).getconferenceTitle());
                 eventConference.add(launchEvent);
             }
 
@@ -43,11 +45,11 @@ public class CalendarTeme implements ICalendarTeme
                 EventConferenceDto networkingEvent = new EventConferenceDto(
                     eventConference.get(trackCountIndex).getMinutes() , 
                     eventConference.get(trackCountIndex).getNetworkingTitle(), 
-                    eventConference.get(trackCountIndex).getId());
+                    eventConference.get(trackCountIndex).getIdLunch(),
+                    eventConference.get(trackCountIndex).getconferenceTitle());
                     eventConference.add(networkingEvent);
             }
         }
-        //Collections.sort(eventConference,new TemesCompare());
     }
 
     int SetConfigurations(int startkIndex, int numberOfTemes, List<EventConferenceDto> eventConference, int startTeme)
@@ -60,7 +62,7 @@ public class CalendarTeme implements ICalendarTeme
 
     int sum180 = CONSTANT.TimeConfiguration.MORNING_TIME_MINUTES;
     int sum240 = CONSTANT.TimeConfiguration.AFTERNOON_TIME_MINUTES;
-
+    int account = 0;    
     int index;
 
     String sessionTime;
@@ -68,12 +70,14 @@ public class CalendarTeme implements ICalendarTeme
 
     for(index=startTeme; index< eventConference.size();index++) {
         if (sum180 >= eventConference.get(index).getMinutes()) {
+            account+=1;
             sum180 = sum180 - eventConference.get(index).getMinutes();
             sessionTime = sdf.format(cal.getTime()) + " " + eventConference.get(index).getTitle() + " " + eventConference.get(index).getMinutes() + "min";
             eventConference.get(index).setTitle(sessionTime);
             cal.add(Calendar.MINUTE, eventConference.get(index).getMinutes());
             SessionTitle = "Track" + " " + (startkIndex + 1);
             eventConference.get(index).setconferenceTitle(SessionTitle);
+            eventConference.get(index).setId(account);
         }
         if (sum180 < eventConference.get(index).getMinutes())
             break;
@@ -84,22 +88,28 @@ public class CalendarTeme implements ICalendarTeme
         if (sum180 <= 0)
             break;
     }
-
+    account+=1;
     eventConference.get(index).setLunchFlag(true);
     sessionTime = "12:00 PM" + " " + "Lunch";
     eventConference.get(index).setLunchTitle(sessionTime);
+    eventConference.get(index).setLunchTitle(sessionTime);
+    eventConference.get(index).setIdLunch(account);
+    eventConference.get(index).setconferenceTitle("Track" + " " + (startkIndex + 1));
     cal.add(Calendar.MINUTE, 60);
 
     index++;
 
     for(;index< eventConference.size();index++) {
+        
         if (sum240 >= eventConference.get(index).getMinutes()) {
+            account+=1;
             sum240 = sum240 - eventConference.get(index).getMinutes();
             sessionTime = sdf.format(cal.getTime()) + " " + eventConference.get(index).getTitle() + " " + eventConference.get(index).getMinutes() + "min";
             eventConference.get(index).setTitle(sessionTime);
             cal.add(Calendar.MINUTE, eventConference.get(index).getMinutes());
             SessionTitle = "Track" + " " + (startkIndex + 1);
             eventConference.get(index).setconferenceTitle(SessionTitle);
+            eventConference.get(index).setId(account);
         }
         if (sum240 < eventConference.get(index).getMinutes())
             break;
@@ -110,13 +120,17 @@ public class CalendarTeme implements ICalendarTeme
         if (sum240 <= 0)
             break;
     }
-
+    
     if(eventConference.size() == (index))
         --index;
+    
+    account+=1;
     eventConference.get(index).setNetworkingFlag(true);
     sessionTime = "5:00 PM" + " " + "Networking Event";
     eventConference.get(index).setNetworkingTitle(sessionTime);
+    eventConference.get(index).setIdLunch(account);
     index++;
+    account = 0;
     return index;
     }
 }

@@ -9,6 +9,7 @@ public class EventConferenceDto {
     private int minutes;
     private String title;
     private int id;
+    private int idLunch;
     private boolean lunchFlag = false;
     private String networkingTitle;
     private boolean networkingFlag = false;
@@ -16,11 +17,12 @@ public class EventConferenceDto {
     private String lunchTitle;
     private String conferenceTitle;
 
-    public EventConferenceDto(int minutes,String title,int id)
+    public EventConferenceDto(int minutes,String title,int id, String conferenceTitle)
     {
         this.minutes = minutes;
         this.title = title;
         this.id = id;
+        this.conferenceTitle = conferenceTitle;
     }
 
     // getter and setter
@@ -41,6 +43,12 @@ public class EventConferenceDto {
     }
     public void setId(int id) {
         this.id = id;
+    }
+    public int getIdLunch() {
+        return idLunch;
+    }
+    public void setIdLunch(int idLunch) {
+        this.idLunch = idLunch;
     }
     public String getSessionTime() {
         return sessionTime;

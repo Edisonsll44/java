@@ -15,7 +15,7 @@ public class TemesCompare implements Comparator<EventConferenceDto> {
 
     @Override
     public int compare(EventConferenceDto o1, EventConferenceDto o2) {
-        if(o1.getMinutes() < o2.getMinutes())
+        if(o1.getMinutes() < o2.getMinutes() && o1.getId() == o2.getId())
         {
             return 1;
         }else{

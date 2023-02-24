@@ -76,7 +76,7 @@ public class ConferenceLogic implements IConferenceLogic {
                     intMinutes = Integer.parseInt(minutes);
                     totalMinutes = totalMinutes + intMinutes;
                 }
-                EventConferenceDto singleTalk = new EventConferenceDto(intMinutes, title, account);
+                EventConferenceDto singleTalk = new EventConferenceDto(intMinutes, title, account,"");
                 temesConference.add(singleTalk);
            
             } catch (Exception e) {
@@ -110,5 +110,6 @@ public class ConferenceLogic implements IConferenceLogic {
         }
         setCountByTeme(noOfSession);
         //Collections.sort(getTemeConference(),new TemesCompare());
+        
     }
 }
