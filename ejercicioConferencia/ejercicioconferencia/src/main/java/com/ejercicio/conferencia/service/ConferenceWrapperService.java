@@ -28,7 +28,8 @@ public class ConferenceWrapperService implements IConferenceWrapperService
         List<TemesDto> listData = _initialData.GetData();
         List<EventConferenceDto> list = _conferenceLogic.ListConferenceTemes(listData);
         int numberOfTemes = _conferenceLogic.getCountByTeme();
-        _calendarTeme.ScheduleTalksIntoTracks(numberOfTemes, list);
+        list = _calendarTeme.ScheduleTalksIntoTracks(numberOfTemes, list);
+        _calendarTeme.OutputOfTalksIntoTracks(list);
         return list;
     }
 

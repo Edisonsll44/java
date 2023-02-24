@@ -63,8 +63,6 @@ public class ConferenceLogic implements IConferenceLogic {
         for(TemesDto dto: temes)
         {
                 String strLine;
-                
-                
             try {
                 account =+1 ;
                 strLine = dto.getResult();
@@ -111,6 +109,6 @@ public class ConferenceLogic implements IConferenceLogic {
             noOfSession = (int) integralPart;
         }
         setCountByTeme(noOfSession);
-        Collections.sort(getTemeConference(),new TemesCompare());
+        //Collections.sort(getTemeConference(),new TemesCompare());
     }
 }
